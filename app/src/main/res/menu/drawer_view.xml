@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/planet_group_1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_first_fragment"
+            android:icon="@drawable/xian"
+            android:title="@string/earth_str" />
+        <item
+            android:id="@+id/nav_second_fragment"
+            android:icon="@drawable/xian"
+            android:title="@string/jupiter_str" />
+
+
+    </group>
+
+    <group
+        android:id="@+id/planet_group_2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_sub_first_fragment"
+            android:icon="@drawable/xian"
+            android:title="@string/saturn_str" />
+        <item
+            android:id="@+id/nav_sub_second_fragment"
+            android:icon="@drawable/xian"
+            android:title="@string/venus_str" />
+
+    </group>
+</menu>

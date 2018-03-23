@@ -1,4 +1,4 @@
-package com.zhisimina.schedule;
+package com.zhisimina.schedule.activity;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -16,6 +16,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.zhisimina.schedule.fragment.PlanetFragment;
+import com.zhisimina.schedule.R;
+import com.zhisimina.schedule.utils.LogUtils;
+
+import java.lang.reflect.Method;
 
 /**
  * @description  主界面
@@ -35,9 +41,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        findViews();
-        setupToolbar();
-        setupDrawerContent(mNavigationView);
+        initView();
+        initToolbar();
+        initDrawerContent(mNavigationView);
         mToggle = setupDrawerToggle();
 
         // Tie DrawerLayout events to the ActionBarToggle
@@ -45,22 +51,24 @@ public class HomeActivity extends AppCompatActivity {
         showDefaultFragment();
     }
 
-    private void findViews() {
+    private void initView() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
     }
 
-    private void setupToolbar() {
+    private void initToolbar() {
         // Set a Toolbar to replace the ActionBar.
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        LogUtils.e("初始化Toolbar");
         setSupportActionBar(mToolbar);
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    private void initDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        LogUtils.e("设置NavigationView子条目选择事件");
                         selectDrawerItem(menuItem);
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
@@ -76,50 +84,39 @@ public class HomeActivity extends AppCompatActivity {
 
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = new PlanetFragment();
-        Bundle args = new Bundle();
-
+        LogUtils.e("抽屉菜单点击事件  selectDrawerItem ");
+        CharSequence title = "点击之前";
         switch (menuItem.getItemId()) {
             case R.id.nav_first_fragment:
-                setFragmentArgs(fragment, args, 0);
+                title = "星期一";
+                setTitle(title);
+                LogUtils.e("点击第一个按钮");
                 break;
             case R.id.nav_second_fragment:
-                setFragmentArgs(fragment, args, 1);
+                title = "星期二";
+                setTitle(title);
+                LogUtils.e("点击第二个按钮");
                 break;
 
 
             case R.id.nav_sub_first_fragment:
-                setFragmentArgs(fragment, args, 2);
+                title = "星期三";
+                setTitle(title);
+                LogUtils.e("点击第三个按钮");
                 break;
             case R.id.nav_sub_second_fragment:
-                setFragmentArgs(fragment, args, 3);
+                title = "星期四";
+                setTitle(title);
+                LogUtils.e("点击第四个按钮");
                 break;
-            default:
-                setFragmentArgs(fragment, args, -1);
         }
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        //mDrawerLayout.closeDrawers();
     }
 
-    private void setFragmentArgs(Fragment fragment, Bundle args, int value) {
-        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, value);
-        fragment.setArguments(args);
-    }
 
     private void showDefaultFragment() {
         Fragment fragment = new PlanetFragment();
-        Bundle args = new Bundle();
-        setFragmentArgs(fragment, args, -1);
-
+        LogUtils.e("展示默认Fragment");
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
@@ -140,6 +137,7 @@ public class HomeActivity extends AppCompatActivity {
 
     protected void closeNavDrawer() {
         if (mDrawerLayout != null) {
+            LogUtils.e("关闭抽屉菜单栏");
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }
     }
@@ -150,6 +148,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
+        LogUtils.e("asd;fkjl;asdfklj;;kjla");
         mToggle.syncState();
     }
 
@@ -157,6 +156,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
+        LogUtils.e("???????");
         mToggle.onConfigurationChanged(newConfig);
     }
 
@@ -175,6 +175,7 @@ public class HomeActivity extends AppCompatActivity {
         // Handle action buttons
         switch (item.getItemId()) {
             case R.id.action_websearch:
+                LogUtils.e("查找按钮点击事件  ");
                 // create intent to perform web search for this planet
                 Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
                 intent.putExtra(SearchManager.QUERY, getTitle());
@@ -185,9 +186,33 @@ public class HomeActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
                 }
                 return true;
+
+            case R.id.menu_main_today:
+                LogUtils.e("点击今天");
+                return true;
+            case R.id.menu_main_search:
+                LogUtils.e("点击搜索");
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // 让菜单同时显示图标和文字
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        if (menu != null) {
+            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
+                try {
+                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(menu, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return super.onMenuOpened(featureId, menu);
     }
 
 

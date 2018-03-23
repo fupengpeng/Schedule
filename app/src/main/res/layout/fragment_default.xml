@@ -1,13 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/default_text"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fffafafa"
-    android:gravity="center"
-    android:padding="32dp"
-    android:text="@string/default_hint_str"
-    android:textColor="@color/hintTextColor"
-    android:textSize="18sp">
+    android:orientation="vertical">
 
-</TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <GridView
+                android:id="@+id/gv_home"
+                android:background="#ffaaaa"
+                android:numColumns="7"
+                android:layout_width="match_parent"
+                android:layout_weight="0.6"
+                android:layout_height="0dp"/>
+            <LinearLayout
+                android:background="#ffaffa"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_weight="0.1"
+                android:layout_height="0dp">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="#ff00ff"
+                android:orientation="vertical"
+                android:layout_weight="0.4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="#00aaff"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="35dp">
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

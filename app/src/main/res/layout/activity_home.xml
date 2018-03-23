@@ -7,33 +7,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- This LinearLayout represents the contents of the screen  -->
+    <!-- 主界面  -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- The ActionBar displayed at the top -->
+        <!-- 标题栏 -->
         <include
             layout="@layout/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- The main content view where fragments are loaded -->
+        <!-- 内容栏 -->
         <FrameLayout
             android:id="@+id/flContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
 
-    <!-- The navigation drawer -->
-
+    <!-- 抽屉 -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/drawer_view" />
+        app:menu="@menu/drawer_view"/>
+
+
 
 </android.support.v4.widget.DrawerLayout>

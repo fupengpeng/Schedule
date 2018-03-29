@@ -3,6 +3,8 @@ package com.zhisimina.schedule.activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import com.zhisimina.schedule.fragment.PlanetFragment;
 import com.zhisimina.schedule.R;
 import com.zhisimina.schedule.utils.LogUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -39,6 +42,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            try {
+                Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
+                Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
+                field.setAccessible(true);
+                field.setInt(getWindow().getDecorView(), Color.TRANSPARENT);  //改为透明
+            } catch (Exception e) {}
+        }
         setContentView(R.layout.activity_home);
 
         initView();
